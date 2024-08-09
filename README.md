@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Web Content Scraper
 
-## Getting Started
+This project fetches transcriptions from YouTube videos, articles from websites, and podcasts, and saves them to files. The project is now a web application built with Next.js, TailwindCSS, ShadcnUI, and JustD, and is hosted on Vercel.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+- Node.js and npm
+- Python 3.x
+- pip (Python package installer)
+- Virtual environment (recommended)
+
+### Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/web-content-scraper.git
+    cd web-content-scraper
+    ```
+
+2. Create a virtual environment for Python:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. Install the required Python packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Install the required Node.js packages:
+    ```bash
+    npm install
+    ```
+
+5. Create a `.env` file in the root directory of the project and add your YouTube Data API key:
+    ```plaintext
+    YOUTUBE_DATA_API_KEY=your_youtube_data_api_key
+    ```
+
+### Usage
+
+1. Start the development server:
+    ```bash
+    npm run dev
+    ```
+
+2. Open your browser and navigate to `http://localhost:3000`.
+
+3. Enter the URLs for articles, podcasts, and YouTube videos in the respective fields and click "Scrape Content".
+
+4. The scraped content will be saved in the `public/articles`, `public/podcasts`, and `public/youtube` folders.
+
+Note: This project now uses TypeScript and the Next.js 13+ App Router.
+
+### Deployment
+
+1. Initialize a Git repository and push your code to GitHub:
+    ```bash
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git remote add origin https://github.com/yourusername/web-content-scraper.git
+    git push -u origin main
+    ```
+
+2. Deploy to Vercel:
+    1. Go to [Vercel](https://vercel.com/), sign in, and create a new project.
+    2. Import your GitHub repository.
+    3. Set up environment variables in Vercel for `YOUTUBE_DATA_API_KEY`.
+    4. Deploy the project.
+
+### Project Structure
+
+```
+web-content-scraper/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── scrape/
+│   │   │       └── route.ts
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   └── ScraperForm.tsx
+│   └── utils/
+│       ├── scraper.ts
+│       ├── youtube_scraper.ts
+│       ├── article_scraper.py
+│       └── podcast_scraper.py
+├── public/
+│   ├── articles/
+│   ├── podcasts/
+│   └── youtube/
+├── .env
+├── .gitignore
+├── package.json
+├── requirements.txt
+├── tailwind.config.js
+├── vercel.json
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is licensed under the MIT License.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+requirements.txt
+newspaper3k
+requests
+google-cloud-speech
+flask

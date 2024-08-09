@@ -1,12 +1,14 @@
-import { YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound, VideoUnavailable } from 'youtube-transcript-api';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
-import re from 're';
+import { YouTubeTranscriptApi } from 'youtube-transcript-api';
 
 dotenv.config();
 const API_KEY = process.env.YOUTUBE_DATA_API_KEY;
+if (!API_KEY) {
+  throw new Error('YOUTUBE_DATA_API_KEY is not set in the environment variables');
+}
 
-export async function get_youtube_transcription(video_id) {
+export async function get_youtube_transcription(video_id: string): Promise<string> {
   try {
     const transcript = await YouTubeTranscriptApi.get_transcript(video_id);
     return transcript.map(entry => entry.text).join(' ');
@@ -15,7 +17,7 @@ export async function get_youtube_transcription(video_id) {
   }
 }
 
-export async function get_video_title(video_id) {
+export async function get_video_title(video_id: string): Promise<string | null> {
   const youtube = google.youtube({
     version: 'v3',
     auth: API_KEY,
@@ -37,6 +39,6 @@ export async function get_video_title(video_id) {
   }
 }
 
-export function sanitize_filename(filename) {
+export function sanitize_filename(filename: string): string {
   return filename.replace(/[\\/*?:"<>|]/g, '');
 }

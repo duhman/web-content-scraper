@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from newspaper import Article
+from newspaper3k import Article
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

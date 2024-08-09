@@ -4,6 +4,8 @@ import re
 import requests
 from google.cloud import speech_v1p1beta1 as speech
 import io
+import os
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

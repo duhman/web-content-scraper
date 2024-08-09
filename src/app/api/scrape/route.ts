@@ -1,0 +1,48 @@
+import { NextResponse } from 'next/server';
+import { process_youtube_videos, process_articles, process_podcasts } from '@/lib/scraper';
+import rateLimit from '@/lib/rate-limit';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
+
+async function runPythonScript(scriptPath: string, args: string[]): Promise<string> {
+  const { stdout, stderr } = await execAsync(`python ${scriptPath} ${args.join(' ')}`);
+  if (stderr) {
+    console.error(`Python script error: ${stderr}`);
+    throw new Error(stderr);
+  }
+  return stdout;
+}
+
+const limiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500, // Max 500 users per second
+});
+
+export async function POST(request: Request) {
+  try {
+    await limiter.check(request, 10, 'CACHE_TOKEN'); // 10 requests per minute
+  } catch {
+    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
+  }
+
+  const { articles, podcasts, youtube_videos } = await request.json();
+
+  // Validate input
+  if (!articles && !podcasts && !youtube_videos) {
+    return NextResponse.json({ message: 'No content provided for scraping' }, { status: 400 });
+  }
+
+  const articleUrls = articles ? articles.split(',').map((url: string) => url.trim()) : [];
+  const podcastUrls = podcasts ? podcasts.split(',').map((url: string) => url.trim()) : [];
+  const youtubeVideoIds = youtube_videos ? youtube_videos.split(',').map((id: string) => id.trim()) : [];
+
+  const results = {
+    articles: await runPythonScript('utils/article_scraper.py', articleUrls),
+    podcasts: await process_podcasts(podcastUrls),
+    youtube_videos: await process_youtube_videos(youtubeVideoIds),
+  };
+
+  return NextResponse.json(results);
+}
