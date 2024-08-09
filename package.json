@@ -1,0 +1,25 @@
+{
+  "name": "web-content-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@irsyadadl/paranoid": "^1.0.0",
+    "@shadcn/ui": "^0.0.4",
+    "@vercel/analytics": "^1.0.0",
+    "axios": "^1.7.3",
+    "glob": "^11.0.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "^2.2.19"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
+  }
+}

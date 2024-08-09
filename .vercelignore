@@ -1,0 +1,12 @@
+# Ignore node_modules and build output
+node_modules/
+.next/
+out/
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore other unnecessary files
+.DS_Store
+*.log
+.env
