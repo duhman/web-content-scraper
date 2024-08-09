@@ -11,9 +11,13 @@ if (!API_KEY) {
 export async function get_youtube_transcription(video_id: string): Promise<string> {
   try {
     const transcript = await YouTubeTranscriptApi.getTranscript(video_id);
-    return transcript.map(entry => entry.text).join(' ');
+    return transcript.map((entry: { text: string }) => entry.text).join(' ');
   } catch (error) {
-    throw new Error(`Error fetching YouTube transcription: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Error fetching YouTube transcription: ${error.message}`);
+    } else {
+      throw new Error('Unknown error occurred while fetching YouTube transcription');
+    }
   }
 }
 
@@ -36,7 +40,11 @@ export async function get_video_title(video_id: string): Promise<string | null> 
     }
     throw new Error('No video found or title is missing');
   } catch (error) {
-    throw new Error(`Error fetching video title: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Error fetching video title: ${error.message}`);
+    } else {
+      throw new Error('Error fetching video title: Unknown error');
+    }
   }
 }
 

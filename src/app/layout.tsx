@@ -2,7 +2,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/Navbar"
-import Footer from "../components/Footer" // Assuming Footer component exists in this location
+import Footer from "../components/Footer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import Image from "next/image"
@@ -50,6 +50,7 @@ export function OptimizedImage({ src, alt, width, height }: { src: string; alt: 
       width={width}
       height={height}
       layout="responsive"
+      priority // Ensures the image is loaded quickly
     />
   )
 }
@@ -83,11 +84,17 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 
   componentDidCatch(error: any, errorInfo: any) {
-    console.log(error, errorInfo)
+    console.error("ErrorBoundary caught an error", error, errorInfo)
   }
+
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>
+      return (
+        <div role="alert" className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
+          <h1>Something went wrong.</h1>
+          <p>Please try refreshing the page, or contact support if the problem persists.</p>
+        </div>
+      )
     }
 
     return this.props.children;
