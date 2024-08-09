@@ -1,6 +1,22 @@
 # Web Content Scraper
 
-This project fetches transcriptions from YouTube videos, articles from websites, and podcasts, and saves them to files. The project is now a web application built with Next.js, TailwindCSS, ShadcnUI, and JustD, and is hosted on Vercel.
+This project is a web application that fetches transcriptions from YouTube videos, articles from websites, and podcasts, and saves them to files. It's built with Next.js, TailwindCSS, ShadcnUI, and JustD, and is hosted on Vercel.
+
+## Features
+
+- Scrape content from YouTube videos, articles, and podcasts
+- User-friendly web interface
+- Automatic saving of scraped content to files
+- Deployment on Vercel
+
+## Tech Stack
+
+- Next.js 13+ with App Router
+- TypeScript
+- TailwindCSS
+- ShadcnUI
+- JustD
+- Python (for backend scraping logic)
 
 ## Setup
 
@@ -35,12 +51,12 @@ This project fetches transcriptions from YouTube videos, articles from websites,
     npm install
     ```
 
-5. Create a `.env` file in the root directory of the project and add your YouTube Data API key:
+5. Create a `.env.local` file in the root directory and add your YouTube Data API key:
     ```plaintext
     YOUTUBE_DATA_API_KEY=your_youtube_data_api_key
     ```
 
-### Usage
+## Usage
 
 1. Start the development server:
     ```bash
@@ -49,30 +65,25 @@ This project fetches transcriptions from YouTube videos, articles from websites,
 
 2. Open your browser and navigate to `http://localhost:3000`.
 
-3. Enter the URLs for articles, podcasts, and YouTube videos in the respective fields and click "Scrape Content".
+3. Use the web interface to enter URLs for articles, podcasts, and YouTube videos, then click "Scrape Content".
 
 4. The scraped content will be saved in the `public/articles`, `public/podcasts`, and `public/youtube` folders.
 
-Note: This project now uses TypeScript and the Next.js 13+ App Router.
+## Deployment
 
-### Deployment
-
-1. Initialize a Git repository and push your code to GitHub:
+1. Push your code to GitHub:
     ```bash
-    git init
     git add .
-    git commit -m "Initial commit"
-    git remote add origin https://github.com/yourusername/web-content-scraper.git
-    git push -u origin main
+    git commit -m "Ready for deployment"
+    git push
     ```
 
 2. Deploy to Vercel:
-    1. Go to [Vercel](https://vercel.com/), sign in, and create a new project.
-    2. Import your GitHub repository.
-    3. Set up environment variables in Vercel for `YOUTUBE_DATA_API_KEY`.
-    4. Deploy the project.
+    1. Connect your GitHub repository to Vercel.
+    2. Configure the environment variables in Vercel, including `YOUTUBE_DATA_API_KEY`.
+    3. Deploy the project.
 
-### Project Structure
+## Project Structure
 
 ```
 web-content-scraper/
@@ -94,16 +105,16 @@ web-content-scraper/
 │   ├── articles/
 │   ├── podcasts/
 │   └── youtube/
-├── .env
+├── .env.local
 ├── .gitignore
 ├── package.json
 ├── requirements.txt
 ├── tailwind.config.js
-├── vercel.json
+├── tsconfig.json
 └── README.md
 ```
 
-### License
+## License
 
 This project is licensed under the MIT License.
 
