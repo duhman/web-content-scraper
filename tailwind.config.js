@@ -14,6 +14,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
 export default config;
