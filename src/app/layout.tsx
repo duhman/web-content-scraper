@@ -55,20 +55,14 @@ export function OptimizedImage({ src, alt, width, height }: { src: string; alt: 
   )
 }
 
-export function RootLayout({ children }: { children: React.ReactNode }) {
+export function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ErrorBoundary>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
-          </ErrorBoundary>
-        </ThemeProvider>
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   )
 }
