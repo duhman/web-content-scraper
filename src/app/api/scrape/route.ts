@@ -1,19 +1,6 @@
 import { NextResponse } from 'next/server';
-import { process_youtube_videos, process_articles, process_podcasts } from '@/lib/scraper';
-import rateLimit from '@/lib/rate-limit';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
-const execAsync = promisify(exec);
-
-async function runPythonScript(scriptPath: string, args: string[]): Promise<string> {
-  const { stdout, stderr } = await execAsync(`python ${scriptPath} ${args.join(' ')}`);
-  if (stderr) {
-    console.error(`Python script error: ${stderr}`);
-    throw new Error(stderr);
-  }
-  return stdout;
-}
+import { process_youtube_videos, process_articles, process_podcasts } from '@/utils/scraper';
+import rateLimit from '@/utils/rate-limit';
 
 const limiter = rateLimit({
   interval: 60 * 1000, // 1 minute
@@ -39,7 +26,7 @@ export async function POST(request: Request) {
   const youtubeVideoIds = youtube_videos ? youtube_videos.split(',').map((id: string) => id.trim()) : [];
 
   const results = {
-    articles: await runPythonScript('utils/article_scraper.py', articleUrls),
+    articles: await process_articles(articleUrls),
     podcasts: await process_podcasts(podcastUrls),
     youtube_videos: await process_youtube_videos(youtubeVideoIds),
   };
