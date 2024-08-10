@@ -55,14 +55,14 @@ export function OptimizedImage({ src, alt, width, height }: { src: string; alt: 
   )
 }
 
-export function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }
@@ -94,5 +94,3 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;
