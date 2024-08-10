@@ -1,3 +1,5 @@
 declare module 'youtube-transcript-api' {
-  export function getTranscript(videoId: string): Promise<{ text: string }[]>;
+  export class YouTubeTranscriptApi {
+    static getTranscript(videoId: string): Promise<{ text: string }[]>;
+  }
 }
