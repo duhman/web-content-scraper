@@ -1,6 +1,6 @@
+import { getTranscript } from 'youtube-transcript-api';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
-import YouTubeTranscriptApi from 'youtube-transcript-api';
 
 dotenv.config();
 const API_KEY = process.env.YOUTUBE_DATA_API_KEY;
@@ -10,7 +10,7 @@ if (!API_KEY) {
 
 export async function get_youtube_transcription(video_id: string): Promise<string> {
   try {
-    const transcript = await YouTubeTranscriptApi.getTranscript(video_id);
+    const transcript = await getTranscript(video_id);
     return transcript.map((entry: { text: string }) => entry.text).join(' ');
   } catch (error) {
     if (error instanceof Error) {
