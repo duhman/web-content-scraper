@@ -11,25 +11,28 @@ export async function POST(request: NextRequest) {
   try {
     await limiter.check(request, 10, 'CACHE_TOKEN'); // 10 requests per minute
   } catch {
-    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
+    return NextResponse.json({ message: 'Rate limit exceeded. Please try again later.' }, { status: 429 });
   }
 
   const { articles, podcasts, youtube_videos } = await request.json();
 
-  // Validate input
   if (!articles && !podcasts && !youtube_videos) {
-    return NextResponse.json({ message: 'No content provided for scraping' }, { status: 400 });
+    return NextResponse.json({ message: 'No content provided for scraping. Please enter at least one URL or video ID.' }, { status: 400 });
   }
 
   const articleUrls = articles ? articles.split(',').map((url: string) => url.trim()) : [];
   const podcastUrls = podcasts ? podcasts.split(',').map((url: string) => url.trim()) : [];
   const youtubeVideoIds = youtube_videos ? youtube_videos.split(',').map((id: string) => id.trim()) : [];
 
-  const results = {
-    articles: await process_articles(articleUrls),
-    podcasts: await process_podcasts(podcastUrls),
-    youtube_videos: await process_youtube_videos(youtubeVideoIds),
-  };
-
-  return NextResponse.json(results);
+  try {
+    const results = {
+      articles: await process_articles(articleUrls),
+      podcasts: await process_podcasts(podcastUrls),
+      youtube_videos: await process_youtube_videos(youtubeVideoIds),
+    };
+    return NextResponse.json(results);
+  } catch (error) {
+    console.error('Error processing content:', error);
+    return NextResponse.json({ message: 'An error occurred while processing the content. Please try again.' }, { status: 500 });
+  }
 }

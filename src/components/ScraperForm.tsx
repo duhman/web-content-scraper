@@ -30,7 +30,8 @@ export default function ScraperForm() {
       setResults(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(`Failed to scrape content: ${error.response?.data?.message || error.message}`);
+        const errorMessage = error.response?.data?.message || error.message;
+        setError(`Failed to scrape content: ${errorMessage}`);
       } else {
         setError('An unexpected error occurred. Please try again.');
       }
@@ -68,9 +69,21 @@ export default function ScraperForm() {
         {loading ? 'Scraping...' : 'Scrape Content'}
       </button>
       {results && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-md">
-          <h2 className="text-lg font-semibold mb-2">Results:</h2>
-          <pre className="whitespace-pre-wrap text-sm">{JSON.stringify(results, null, 2)}</pre>
+        <div className="mt-6 space-y-4">
+          {['articles', 'podcasts', 'youtube_videos'].map((type) => (
+            <div key={type} className="bg-white p-4 rounded-lg shadow">
+              <h3 className="text-lg font-semibold mb-2 capitalize">{type.replace('_', ' ')}</h3>
+              {results[type].map((item: any, index: number) => (
+                <div key={index} className="mb-2">
+                  {item.error ? (
+                    <p className="text-red-500">{`Error: ${item.error}`}</p>
+                  ) : (
+                    <p className="text-green-500">{`Successfully processed: ${item.title || item.url || item.videoId}`}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </form>

@@ -7,12 +7,20 @@ export async function download_podcast(url: string): Promise<string | null> {
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const filename = path.join(process.cwd(), 'temp', `podcast_${Date.now()}.mp3`);
-    await fs.mkdir(path.dirname(filename), { recursive: true });
+    await ensureDirectoryExists(path.dirname(filename));
     await fs.writeFile(filename, response.data);
     return filename;
   } catch (error) {
-    console.error(`Error downloading podcast: ${error}`);
-    return null;
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('Podcast not found');
+      } else if (error.response?.status === 403) {
+        throw new Error('Access to podcast is forbidden');
+      } else if (error.code === 'ECONNABORTED') {
+        throw new Error('Network timeout while downloading podcast');
+      }
+    }
+    throw new Error('Failed to download podcast');
   }
 }
 
@@ -38,4 +46,8 @@ export async function transcribe_podcast(audio_path: string): Promise<string | n
     console.error(`Error transcribing podcast: ${error}`);
     return null;
   }
+}
+
+function ensureDirectoryExists(arg0: string) {
+  throw new Error('Function not implemented.');
 }
